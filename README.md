@@ -608,7 +608,7 @@ The CAS BACnet Stack supports every standardized device profile in ASHRAE 135-20
 |---|---|---|
 | **B-BBMD** Broadcast Management Device | [B-BBMD-CPP](https://github.com/chipkin/BACnetProfileExample-B-BBMD-CPP) ✅ | ✅ DS-RP-B · ✅ DS-WP-B · ✅ DM-DDB-B · ✅ DM-DOB-B · ✅ DM-DCC-B · ✅ NM-BBMDC-B |
 | **B-ACDC** Access Control Door Controller | [B-ACDC-CPP](https://github.com/chipkin/BACnetProfileExample-B-ACDC-CPP) ✅ | ✅ DS-RP-B · ✅ DS-WP-B · ✅ DS-ACAD-B · ✅ DM-DDB-B · ✅ DM-DOB-B |
-| **B-ACCR** Access Control Credential Reader | [B-ACCR-CPP](https://github.com/chipkin/BACnetProfileExample-B-ACCR-CPP) 📝 | ✅ DS-RP-B · ✅ DS-WP-B · ✅ DS-COV-B · ✅ DS-ACCDI-B · ✅ DM-DDB-B · ✅ DM-DOB-B |
+| **B-ACCR** Access Control Credential Reader | [B-ACCR-CPP](https://github.com/chipkin/BACnetProfileExample-B-ACCR-CPP) ✅ | ✅ DS-RP-B · ✅ DS-WP-B · ✅ DS-COV-B · ✅ DS-ACCDI-B · ✅ DM-DDB-B · ✅ DM-DOB-B |
 | **B-RTR** Router | [B-RTR-CPP](https://github.com/chipkin/BACnetProfileExample-B-RTR-CPP) 📝 | ✅ DS-RP-B · ✅ DS-WP-B · ✅ DM-DDB-A · ✅ DM-DOB-B · ✅ DM-LM-B · ✅ NM-RC-B |
 | **B-GW** Gateway | [B-GW-CPP](https://github.com/chipkin/BACnetProfileExample-B-GW-CPP) 📝 | ✅ DS-RP-B · ✅ DS-WP-B · ✅ DM-DDB-B · ✅ DM-DOB-B · ✅ DM-DCC-B · ✅ GW-EO-B / GW-VN-B |
 | **B-DAP** Device Address Proxy | [B-DAP-CPP](https://github.com/chipkin/BACnetProfileExample-B-DAP-CPP) 📝 | ✅ DS-RP-B · ✅ DS-WP-B · ✅ DM-DDB-B · ✅ DM-DOB-B · ✅ DM-DAB-B |
@@ -647,9 +647,12 @@ run (`metrics-windows.json` / `metrics-linux.json`), both built with
 `CAS_BACNET_STACK_LINK=STATIC`:
 
 <!-- METRICS -->
-Not yet released - this table is filled in from the first tagged release's
-`metrics-windows.json` / `metrics-linux.json` (see `../docs` §8 step 4 of the
-series runbook).
+| Platform | Binary | Size | SHA-256 (prefix) | Start-up to `ready` | Stack commit | Link mode | Compiler |
+|---|---|---|---|---|---|---|---|
+| Windows x64 (windows-2022) | `BACnetExampleBACCR.exe` | 3,251,712 bytes (~3.1 MiB) | `f49ef8af048612d9` | 179 ms | `abd4cee1` | STATIC | Visual Studio 17 2022 |
+| Linux x64 (ubuntu-latest) | `BACnetExampleBACCR` | 39,944 bytes (~39 KiB) | `b7e307d14ea9805c` | 109 ms | `abd4cee1` | STATIC | `/usr/bin/c++` |
+
+From release [v1.0.0](https://github.com/chipkin/BACnetProfileExample-B-ACCR-CPP/releases/tag/v1.0.0) (`metrics-windows.json` / `metrics-linux.json`).
 
 ## References
 
