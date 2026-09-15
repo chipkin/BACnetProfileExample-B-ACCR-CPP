@@ -33,7 +33,7 @@ CAS BACnet Stack example series, built from the plan-only stub. Implements:
   Multi-State Input 1 "Hot Pink", Network Port 1 "Vermilion".
 - **CAS BACnet Stack 6.0.21 (`6.x` @ `abd4cee1`), linked as a static library**
   (`-DCAS_BACNET_STACK_LINK=STATIC`, built by `tools/build-stack-static.sh`).
-  `common/` **v2.2.0**, byte-identical with the rest of the series.
+  `common/` **v2.5.0**, byte-identical with the rest of the series.
 - `docs/objects.json`-driven "Objects and properties" README block, the
   series-wide profile table block, and a `## Footprint` table placeholder
   (filled at release).
@@ -76,5 +76,14 @@ has no interactive console for the up/down keys `PollKey()` reads
 `BACnetStack_UpdateValue` call this relies on is the same API already proven,
 in this same session, to deliver the *initial* notification correctly for
 both objects.
+
+**`common/` moved twice more after this repo's initial merge**, both times
+from other Wave 2 repos building in parallel: 2.2.0 (this repo's initial
+merge) -> 2.3.0/2.4.0 (multi-port UDP support + a router-announce key,
+`BACnetProfileExample-B-RTR-CPP`'s F-ROUTER/F-MULTIPORT canonical work) ->
+2.5.0 (`PROPERTY_IDENTIFIER_ROUTING_TABLE`, same repo). All three are
+documented non-breaking / additive for single-port examples like this one
+(`common/CHANGELOG.md`, verified there directly against B-SS-CPP). Re-synced
+to 2.5.0 and rebuilt STATIC; smoke test unchanged.
 
 [1.0.0]: https://github.com/chipkin/BACnetProfileExample-B-ACCR-CPP/releases/tag/v1.0.0
