@@ -78,13 +78,13 @@ type (135-2024 Table 13-1). For most types that is `Present_Value`; for
 `Update_Time` instead. Calling `SetPropertySubscribable` on
 `Present_Value` for Credential Data Input 1 compiles, returns `true`, and
 still fails every client's SubscribeCOV with `Error(subscribe-cov):
-property: not-cov-property` - confirmed on the wire with `bacpypes3` while
+property: not-cov-property` - confirmed on the wire with a real BACnet client while
 building this example. Fixed by making `Update_Time` the subscribable /
 `UpdateValue`-driven property instead; the notification payload still
 carries `Present_Value` (it is just not the trigger condition). See the long
 comment above the `SetPropertySubscribable` calls in `main.cpp`.
 
-**Verified with a live BACnet client (`bacpypes3`), this session:**
+**Verified with a live BACnet client, this session:**
 Who-Is/I-Am from 389012; `Object_List` (6 objects); every required property
 of Analog Input 1 and Credential Data Input 1 read back correctly, including
 `Present_Value` (AuthenticationFactor, correctly wrapped), `Supported_Formats`

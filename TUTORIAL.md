@@ -72,7 +72,7 @@ Follow these three steps, in order, when you add COV to a property:
 > SubscribeCOV on that object fails with `Error(subscribe-cov): property:
 > not-cov-property`, because the stack is checking a *different* property's
 > subscribable flag than the one that got set. This was confirmed on the wire
-> with `bacpypes3` while building this example (see `CHANGELOG.md`). The
+> with a real BACnet client while building this example (see `CHANGELOG.md`). The
 > notification *content* is unaffected by this distinction: it still carries
 > `Present_Value` + `Status_Flags` + `Update_Time` - `Update_Time` is only the
 > **trigger condition**, not the only payload field.
