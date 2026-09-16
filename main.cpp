@@ -138,7 +138,8 @@ static const char* APP_VERSION = "1.0.0";
 
 // The device instance. BACnet requires this to be configurable, so it defaults
 // to 389012 (each profile example in the series has its own default, so several
-// examples can run on one subnet) and can be overridden with --deviceID.
+// examples can run on one subnet) and can be overridden with --deviceID. Keep
+// it configurable in your product: it must be unique across the internetwork.
 static uint32_t g_deviceInstance = 389012;
 
 // ---- Device identity: CHANGE ALL OF THIS BEFORE YOU SHIP --------------------
@@ -147,6 +148,9 @@ static uint32_t g_deviceInstance = 389012;
 // site announcing itself as a Chipkin demo. None of it is cosmetic:
 // Object_Name must be unique across the BACnet internetwork, and Model_Name /
 // Vendor_Identifier are what a building operator uses to identify your device.
+//
+// This block is the ship checklist. Every constant below has a note saying what
+// to change it to; nothing here is safe to leave at its example value.
 // -----------------------------------------------------------------------------
 
 // Your BACnet Vendor Identifier. 389 = Chipkin Automation Systems; change this
@@ -154,7 +158,20 @@ static uint32_t g_deviceInstance = 389012;
 // by ASHRAE - request one (free) at https://bacnet.org/assigned-vendor-ids/.
 // Update VENDOR_NAME below to match.
 static const uint32_t VENDOR_IDENTIFIER = 389;
+
+// The Device object's Object_Name.
+//
+// THIS IS THE ONE THAT WILL BITE YOU. Object_Name must be unique across the
+// whole BACnet internetwork, and here it is a COMPILE-TIME constant. The device
+// instance is runtime-configurable via --deviceID, so it is easy to ship two
+// units, configure their instances correctly, and still have BOTH announce
+// Object_Name "Rainbow" - a spec violation, and a hard BTL failure. In a real
+// product Object_Name must be per-unit configurable too: derive it from a serial
+// number, DIP switches, a config file, or add a --deviceName argument.
 static const char* DEVICE_NAME = "Rainbow";
+
+// The Device object's Description. Change it to what YOUR device actually is;
+// this string describes this tutorial.
 static const char* DEVICE_DESCRIPTION =
     "Chipkin CAS BACnet Stack example - B-ACCR (Access Control Credential "
     "Reader) profile. Demonstrates DS-RP-B + DS-WP-B + DS-COV-B + DS-ACCDI-B: "
@@ -162,6 +179,12 @@ static const char* DEVICE_DESCRIPTION =
     "pushed to subscribers with SubscribeCOV.";
 
 // Device identity strings (read by clients, and used to populate I-Am).
+//   VENDOR_NAME - your company name; it must match VENDOR_IDENTIFIER above.
+//   MODEL_NAME  - your model designation. This is what a building operator reads
+//                 to identify your device in a discovery tool.
+//   FIRMWARE_REVISION / APPLICATION_SOFTWARE_VERSION - your real versions. Wire
+//                 them to your build rather than hard-coding a number that will
+//                 go stale.
 static const char* VENDOR_NAME = "Chipkin Automation Systems";
 static const char* MODEL_NAME = "CAS BACnet Stack Example - B-ACCR";
 static const char* FIRMWARE_REVISION = "1.0.0";
