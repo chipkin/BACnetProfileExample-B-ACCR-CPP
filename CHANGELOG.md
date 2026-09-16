@@ -5,6 +5,33 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- **Documentation restructure**, matching `BACnetProfileExample-B-SS-CPP`:
+  `README.md` cut down to this example only (device tree, BIBBs/services/
+  objects tables, build/run/verify, footprint, series table, references);
+  long-form material (SubscribeCOV/F-COV pattern, Credential Data Input's
+  `Present_Value` explanation, extending the example, who-serves-what,
+  troubleshooting) moved to a new `TUTORIAL.md`; a new `docs/PICS.md` holds
+  the ANSI/ASHRAE 135 Annex A-shaped conformance statement, generated in part
+  from `docs/objects.json` (which now also lists the Device object). The
+  ship-guidance table that used to live in the README ("Before you ship") is
+  now comments in `main.cpp`'s `CHANGE ALL OF THIS BEFORE YOU SHIP` block,
+  including the `DEVICE_NAME` uniqueness warning.
+- **Build switched from a prebuilt STATIC library to the adapter's default
+  SOURCE mode**: `cmake -B build -S .` / `cmake --build build --config
+  Release` with no link-mode flag, matching every other repository in the
+  series and removing the `tools/build-stack-static.sh` series-root
+  dependency this repository could not satisfy on its own.
+  `.github/workflows/release.yml` updated to match (no static-library cache/
+  build steps, no matrix `lib:` entries, link-mode assertion now `SOURCE`,
+  metrics JSON's `link_mode` now `"SOURCE"`, `TUTORIAL.md` and
+  `docs/PICS.md` added to the packaged release artifact). The Footprint
+  table's numbers are still from the v1.0.0 STATIC build; the next release
+  refreshes them from the documented SOURCE build.
+
 ## [1.0.0] - 2026-09-15
 
 ### Added
