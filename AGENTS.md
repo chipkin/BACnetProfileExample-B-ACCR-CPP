@@ -70,7 +70,7 @@ fire a COV notification to any subscriber (see "The F-COV pattern" below).
 
 ## Conventions
 
-- Device is named "Rainbow"; objects use the series' colour names; vendor id 389.
+- Device is named "Chipkin Example B-ACCR"; objects use the series' colour names; vendor id 389.
 - Implement **only** the services and objects the B-ACCR profile requires - but
   expose **every required property** of each object for Protocol_Revision 24.
 - **The F-COV pattern** (this repo is canonical for it): call

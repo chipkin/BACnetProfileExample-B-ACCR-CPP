@@ -49,7 +49,7 @@ application-specific. The result is conformant for **Protocol_Revision 24**.
 ## The device this example creates
 
 ```
-Device 389012  "Rainbow"   (Vendor 389 - Chipkin Automation Systems)
+Device 389012  "Chipkin Example B-ACCR"   (Vendor 389 - Chipkin Automation Systems)
     │
     ├── Analog Input  1            "Bronze"    Present_Value  21.5    (REAL, degrees Celsius; read-only; COV-subscribable)
     ├── Binary Input  1            "Emerald"   Present_Value  inactive  (0 = inactive / 1 = active; read-only)
@@ -94,7 +94,7 @@ satisfies **B-GENERAL** too - that is subsumption, not a second claim.
 
 | Object type | Instance | Name | Access |
 |-------------|:--------:|------|--------|
-| Device | 389012 | Rainbow | - |
+| Device | 389012 | Chipkin Example B-ACCR | - |
 | Analog Input | 1 | Bronze | read-only; `Present_Value` COV-subscribable |
 | Binary Input | 1 | Emerald | read-only |
 | Multi-State Input | 1 | Hot Pink | read-only |
@@ -191,7 +191,7 @@ CAS BACnet Stack version: 6.0.21.0
 Common helper (common/) version: 2.5.0
 FYI: Listening for BACnet/IP on UDP port 47808 (Network Port 1).
 TX 21 bytes to 192.168.3.255:47808 (broadcast) (Network Port 1)
-FYI: Device 389012 ("Rainbow") ready. Vendor ID 389. Press 'h' for help.
+FYI: Device 389012 ("Chipkin Example B-ACCR") ready. Vendor ID 389. Press 'h' for help.
 ```
 
 The `TX` line is the start-up I-Am the device broadcasts to announce itself. It
@@ -239,10 +239,10 @@ Use a BACnet client such as the
 1. **Discover** - send a **Who-Is**. The device replies with **I-Am** from
    instance **389012** (vendor **389**). It also broadcasts an I-Am at start-up.
 2. **Browse the object model** - the device shows six objects: the Device
-   (`Rainbow`), three base inputs, Credential Data Input (`Flax`), and the
+   (`Chipkin Example B-ACCR`), three base inputs, Credential Data Input (`Flax`), and the
    Network Port (`Vermilion`). Reading the Device's `Object_List` returns all six.
 3. **Read the Device** - ReadProperty `389012` -> `Object_Name` returns
-   `"Rainbow"`; `Protocol_Revision` returns `24`; `Description` returns the
+   `"Chipkin Example B-ACCR"`; `Protocol_Revision` returns `24`; `Description` returns the
    profile description string.
 4. **Read Credential Data Input 1** - ReadProperty `Present_Value` returns the
    current card ID (an octet string); `Supported_Formats` returns one entry
