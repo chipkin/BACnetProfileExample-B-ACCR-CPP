@@ -3,7 +3,7 @@
 > **Blocked Example.** The CAS BACnet Stack cannot yet perform the B-ACCR
 > Profile Function - reporting a presented credential - through its customer
 > interface, so this example stays published but is **blocked** on that stack
-> gap (no stack issue is filed for it yet). What it does today:
+> gap ([cas-bacnet-stack#3934](https://github.com/chipkin/cas-bacnet-stack/issues/3934)). What it does today:
 >
 > - **Every read of Credential Data Input 1's `Present_Value` says "no
 >   credential".** The stack wraps the application's OctetString callback as a
