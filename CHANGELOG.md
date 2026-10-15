@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.2] - unreleased
 
+### Changed - stack 6.x @ 64b2cfac5 (2026-10-15)
+
+- **Stack Pin moved `e6de4ffd` -> `6.x` @ `64b2cfac5`** (still reports 6.0.23),
+  per docs/adr/0001. `64b2cfac5` is the promotion of `issues/runbook` that
+  carries stack #3850, so the `6.x` tip links customer (non-test-tool) builds
+  again. Builds clean (Windows STATIC, `ReleaseLib|x64`) with no source change.
+- **`common/` 3.0.0 -> 3.3.0**, vendored verbatim from
+  BACnetProfileExample-B-SS-CPP `b640a81`: the `k`, `o`, `f`, `p` key commands
+  (unused here) and a zero-length connection string sent as a broadcast.
+- README sample output: the start-up `TX` line ends `- Unconfirmed: I-Am`, as
+  the program prints it.
+- Still a **Blocked Example on stack #3934** (open): at this pin the stack
+  still wraps the OctetString callback as `BACnetAuthenticationFactor(0, 0, ...)`,
+  and the only way to set a Format-Type is the test-tool
+  `BACnetStackTestTool_PushCredentialDataInputFactor`, which this example must
+  not use. New `TODO.md` names the issue; the series profile table now links it
+  instead of "no stack issue yet".
+
 ### Changed - honesty pass (2026-10-14)
 
 - **Stack Pin moved `abd4cee1` (6.0.21) -> `6.x` @ `e6de4ffd` (6.0.23)**, per
