@@ -72,7 +72,7 @@ fire a COV notification to any subscriber (see "The F-COV pattern" below).
 
 - Device is named "Chipkin Example B-ACCR"; objects use the series' colour names; vendor id 389.
 - Implement **only** the services and objects the B-ACCR profile requires - but
-  expose **every required property** of each object for Protocol_Revision 24.
+  expose **every required property** of each object for Protocol_Revision 30.
 - **The F-COV pattern** (this repo is canonical for it): call
   `BACnetStack_SetPropertySubscribable` on the property a client will watch,
   bound the subscription table with `BACnetStack_SetCOVSettings`, enable the
@@ -82,10 +82,12 @@ fire a COV notification to any subscriber (see "The F-COV pattern" below).
 - Credential Data Input's `Present_Value` is `BACnetAuthenticationFactor`, a
   constructed type - the stack serves it by wrapping the application's
   `GetPropertyOctetString` callback's raw bytes (format-type/class come back
-  as the stack-side default `0`). `Supported_Formats` needs its own dedicated
-  callback (`RegisterCallbackGetPropertyAuthenticationFactorFormat`);
-  `Update_Time` is wrapped from the existing Time callback. None of this is a
-  gap - it is a verified customer-DLL capability (stack PRs #166/#167).
+  as `0`). Format-Type `0` is `UNDEFINED` ("no current authentication factor",
+  cl. 12.36.4), so every read reports no credential: a stack gap that makes
+  this a **Blocked Example** - see the README banner. Do not describe it as a
+  working capability. `Supported_Formats` needs its own dedicated callback
+  (`RegisterCallbackGetPropertyAuthenticationFactorFormat`); `Update_Time` is
+  wrapped from the existing Time callback, at whole-second resolution.
 - Match the surrounding code style: `const`-correct parameters, check every stack
   return value, keep `main.cpp` linear and well-commented.
 - **Never edit `common/` in this repo alone** - it is a vendored copy shared by
@@ -101,7 +103,7 @@ There are no unit tests; verification is behavioural:
 2. With a BACnet client (e.g. the CAS BACnet Explorer, or `bacpypes3`/`BAC0`),
    send **Who-Is** and confirm **I-Am** from the device instance.
 3. **ReadProperty** every required property of every object and confirm the
-   values; confirm `Protocol_Revision` is 24 and `Object_List` lists all objects.
+   values; confirm `Protocol_Revision` is 30 and `Object_List` lists all objects.
 4. **SubscribeCOV** (confirmed and unconfirmed) on Analog Input 1; press up/down
    and confirm a notification arrives carrying `Present_Value` and
    `Status_Flags`; let the subscription's lifetime elapse and confirm it

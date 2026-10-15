@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.2] - unreleased
 
+### Changed - honesty pass (2026-10-14)
+
+- **Stack Pin moved `abd4cee1` (6.0.21) -> `6.x` @ `e6de4ffd` (6.0.23)**, per
+  docs/adr/0001 (the pin follows the latest `6.x` when an example is updated).
+  Not the `6.x` tip `4b27bd56d`: that tip fails to link any customer
+  (non-test-tool) build - `RecordTypedGetDecline` is defined only under
+  `BACNET_STACK_TESTTOOL` (stack #3850, fixed on `issues/runbook` but not yet
+  promoted to `6.x`). `e6de4ffd` is the newest `6.x` commit that links. Builds
+  clean (STATIC) with no source change.
+- **Protocol_Revision is 30, not 24** - the stack default at this pin. README,
+  PICS, TUTORIAL, AGENTS.md and `main.cpp` comments said 24.
+- README version banner and sample output, and PICS Application Software
+  Version / Firmware Revision, now match what the program reports
+  (`APP_VERSION`, the linked stack version, `common/` 3.0.0).
+- Series profile table re-synced (B-ACCR and B-DAP marked as Blocked Examples).
+- **Now a Blocked Example.** `main.cpp`, TUTORIAL, AGENTS.md and PICS called the
+  Credential Data Input's authentication factor "a real, verified customer-DLL
+  capability ... not a gap". It is a gap: the stack wraps the OctetString
+  callback as `BACnetAuthenticationFactor(0, 0, ...)`, and Format-Type 0 is
+  UNDEFINED - "no current authentication factor" (cl. 12.36.4) - on every read.
+  README carries a blocked banner naming this, plus the whole-second
+  `Update_Time` resolution that collapses same-second presentations into one COV
+  notification.
+
 ### Changed
 
 - **Device renamed from the series' colour placeholder "Rainbow" to "Chipkin

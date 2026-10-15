@@ -18,10 +18,10 @@ see [README.md](../README.md).
 | **Vendor Identifier** | 389 |
 | **Product Name** | CAS BACnet Stack Example - B-ACCR |
 | **Product Model Number** | CAS BACnet Stack Example - B-ACCR |
-| **Application Software Version** | 1.0.0 |
-| **Firmware Revision** | 1.0.0 |
+| **Application Software Version** | 1.0.2 (`APP_VERSION` in `main.cpp`) |
+| **Firmware Revision** | the linked CAS BACnet Stack version (6.0.23.0 at this Stack Pin) |
 | **BACnet Protocol Version** | 1 |
-| **BACnet Protocol Revision** | 24 |
+| **BACnet Protocol Revision** | 30 |
 
 **Product Description:** a BACnet/IP access control credential reader built on
 the CAS BACnet Stack. It presents the three base sensor objects (Analog Input,
@@ -206,7 +206,7 @@ Every object this example creates, and every REQUIRED property of each (per ANSI
 | State_Text *(optional, enabled)* | BACnetARRAY[N] of CharacterString | app | no |
 | Property_List | BACnetARRAY[N] of BACnetPropertyIdentifier | stack | no |
 
-### Credential Data Input 1 "Flax" - Present_Value is BACnetAuthenticationFactor (a 4-byte simple-number32 card ID, served via the OctetString callback - format-type/class default to 0 stack-side); Supported_Formats and Update_Time are REQUIRED (cl. 12.36) but not yet listed in the stack's property-profile-reference.md for this object type, so they do not appear as generated rows below - a documentation gap in the reference, not a capability gap in this example: both are served (Supported_Formats via RegisterCallbackGetPropertyAuthenticationFactorFormat, Update_Time via the existing Time callback wrapped into BACnetTimeStamp). Update_Time - NOT Present_Value - is the COV-subscribable property for this object type (135-2024 Table 13-1; F-COV canonical example, see TUTORIAL.md); the notification payload still carries Present_Value. The up/down keys simulate a new card presentation
+### Credential Data Input 1 "Flax" - Present_Value is BACnetAuthenticationFactor (a 4-byte simple-number32 card ID, served via the OctetString callback; the stack always reports Format-Type 0 = UNDEFINED and Format-Class 0, so every read means "no current authentication factor" (cl. 12.36.4) - a stack gap that makes this a Blocked Example, see README.md); Supported_Formats and Update_Time are REQUIRED (cl. 12.36) but not yet listed in the stack's property-profile-reference.md for this object type, so they do not appear as generated rows below - a documentation gap in the reference, not a capability gap in this example: both are served (Supported_Formats via RegisterCallbackGetPropertyAuthenticationFactorFormat, Update_Time via the existing Time callback wrapped into BACnetTimeStamp). Update_Time - NOT Present_Value - is the COV-subscribable property for this object type (135-2024 Table 13-1; F-COV canonical example, see TUTORIAL.md); the notification payload still carries Present_Value. The up/down keys simulate a new card presentation
 
 | Property | Datatype | Served by | Writable |
 |---|---|---|:---:|

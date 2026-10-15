@@ -1,5 +1,29 @@
 # BACnet B-ACCR (Access Control Credential Reader) - C++ example
 
+> **Blocked Example.** The CAS BACnet Stack cannot yet perform the B-ACCR
+> Profile Function - reporting a presented credential - through its customer
+> interface, so this example stays published but is **blocked** on that stack
+> gap (no stack issue is filed for it yet). What it does today:
+>
+> - **Every read of Credential Data Input 1's `Present_Value` says "no
+>   credential".** The stack wraps the application's OctetString callback as a
+>   `BACnetAuthenticationFactor` with Format-Type `0` and Format-Class `0`.
+>   Format-Type `0` is `UNDEFINED`, which clause 12.36.4 reserves for "there is
+>   no current authentication factor value read by this object". The card bytes
+>   ride along, but a conforming client must ignore them. The customer interface
+>   has no way to report the real Format-Type (`simple-number32`, the one
+>   format this reader lists in `Supported_Formats`).
+> - **Two card presentations in the same second produce one COV
+>   notification, not two.** COV on a Credential Data Input is triggered by
+>   `Update_Time`, and this example serves `Update_Time` from `time()`, which
+>   has whole-second resolution (hundredths are always `0`). A second
+>   presentation inside the same second does not change `Update_Time`. (Read
+>   from the code, not yet shown by a Wire Test.)
+>
+> The rest (Device, Network Port, the three sensor objects, ReadProperty,
+> WriteProperty, Who-Is, SubscribeCOV on Analog Input 1) works as described
+> below.
+
 A minimal, copy-paste-friendly example showing how to implement the BACnet
 **B-ACCR (Access Control Credential Reader)** device profile in C++ using the
 [CAS BACnet Stack](https://store.chipkin.com/services/stacks/bacnet-stack).
@@ -17,9 +41,9 @@ instead of making every client poll.
 - **[docs/PICS.md](docs/PICS.md)** - the Protocol Implementation Conformance
   Statement: every object, every property, and who answers it.
 
-> **Versions:** this document describes **example v1.0.0**, built and verified
-> against **CAS BACnet Stack 6.0.21** (`6.x` @ `abd4cee1`), at
-> **Protocol_Revision 24**, with the vendored `common/` helper at **v2.5.0**.
+> **Versions:** this document describes **example v1.0.2**, built and verified
+> against **CAS BACnet Stack 6.0.23** (`6.x` @ `e6de4ffd`), at
+> **Protocol_Revision 30**, with the vendored `common/` helper at **v3.0.0**.
 > Running the example prints all three - if what it prints disagrees with this
 > line, trust the program and check `CHANGELOG.md`.
 
@@ -43,7 +67,7 @@ device needs one), and its objects - and each object must expose all of its
 **required properties**. The CAS BACnet Stack generates most of those
 automatically (Object_Identifier, Object_Type, Status_Flags, Object_List,
 Protocol_*, ...); this example supplies the handful that are
-application-specific. The result is conformant for **Protocol_Revision 24**.
+application-specific. The result is conformant for **Protocol_Revision 30**.
 [docs/PICS.md](docs/PICS.md) lists every property and who answers it.
 
 ## The device this example creates
@@ -186,9 +210,9 @@ CMake at it: `cmake -B build -S . -D CAS_STACK_DIR=/path/to/cas-bacnet-stack`.
 Expected output:
 
 ```
-BACnet B-ACCR (Access Control Credential Reader) Example - C++ v1.0.0
-CAS BACnet Stack version: 6.0.21.0
-Common helper (common/) version: 2.5.0
+BACnet B-ACCR (Access Control Credential Reader) Example - C++ v1.0.2
+CAS BACnet Stack version: 6.0.23.0
+Common helper (common/) version: 3.0.0
 FYI: Listening for BACnet/IP on UDP port 47808 (Network Port 1).
 TX 21 bytes to 192.168.3.255:47808 (broadcast) (Network Port 1)
 FYI: Device 389012 ("Chipkin Example B-ACCR") ready. Vendor ID 389. Press 'h' for help.
@@ -242,10 +266,12 @@ Use a BACnet client such as the
    (`Chipkin Example B-ACCR`), three base inputs, Credential Data Input (`Flax`), and the
    Network Port (`Vermilion`). Reading the Device's `Object_List` returns all six.
 3. **Read the Device** - ReadProperty `389012` -> `Object_Name` returns
-   `"Chipkin Example B-ACCR"`; `Protocol_Revision` returns `24`; `Description` returns the
+   `"Chipkin Example B-ACCR"`; `Protocol_Revision` returns `30`; `Description` returns the
    profile description string.
-4. **Read Credential Data Input 1** - ReadProperty `Present_Value` returns the
-   current card ID (an octet string); `Supported_Formats` returns one entry
+4. **Read Credential Data Input 1** - ReadProperty `Present_Value` returns a
+   `BACnetAuthenticationFactor` whose Format-Type is `UNDEFINED` (0) - "no
+   credential", the Blocked Example gap above - with the current card ID in its
+   value field; `Supported_Formats` returns one entry
    (`simple-number32`); `Update_Time` returns the wall-clock moment the card
    last changed; `Reliability` returns `no-fault-detected`.
 5. **SubscribeCOV on Analog Input 1** - subscribe (confirmed, then separately
@@ -272,7 +298,7 @@ reasoning behind the SubscribeCOV subtleties above, see
 ## The BACnet profile example series
 
 <!-- PROFILE-TABLE:BEGIN (generated from cas-bacnet-stack-examples/docs/profile-table.md - do not edit here) -->
-The CAS BACnet Stack supports every standardized device profile in ASHRAE 135-2024 Annex L, and there is one example repository per profile. Pick the profile your device claims, then the language you build in. "Ask" means the example hasn't been built yet for that language - [contact Chipkin](https://store.chipkin.com/contact-us) if you need one.
+There is one example repository per standardized device profile in ASHRAE 135-2024 Annex L. An example marked ⛔ is blocked: the stack cannot yet perform that profile's function through its customer interface, and the example's README says what it does today. Pick the profile your device claims, then the language you build in. "Ask" means the example hasn't been built yet for that language - [contact Chipkin](https://store.chipkin.com/contact-us) if you need one.
 
 ### Controllers (Annex L.4)
 
@@ -325,10 +351,10 @@ The CAS BACnet Stack supports every standardized device profile in ASHRAE 135-20
 |---|---|---|---|---|---|---|
 | **B-BBMD** Broadcast Management Device | [B-BBMD-CPP](https://github.com/chipkin/BACnetProfileExample-B-BBMD-CPP) | Ask | Ask | Ask | Ask | Ask |
 | **B-ACDC** Access Control Door Controller | [B-ACDC-CPP](https://github.com/chipkin/BACnetProfileExample-B-ACDC-CPP) | Ask | Ask | Ask | Ask | Ask |
-| **B-ACCR** Access Control Credential Reader | [B-ACCR-CPP](https://github.com/chipkin/BACnetProfileExample-B-ACCR-CPP) | Ask | Ask | Ask | Ask | Ask |
+| **B-ACCR** Access Control Credential Reader | [B-ACCR-CPP](https://github.com/chipkin/BACnetProfileExample-B-ACCR-CPP) ⛔ blocked: credential format not reportable (no stack issue yet) | Ask | Ask | Ask | Ask | Ask |
 | **B-RTR** Router | [B-RTR-CPP](https://github.com/chipkin/BACnetProfileExample-B-RTR-CPP) | Ask | Ask | Ask | Ask | Ask |
 | **B-GW** Gateway | [B-GW-CPP](https://github.com/chipkin/BACnetProfileExample-B-GW-CPP) | Ask | Ask | Ask | Ask | Ask |
-| **B-DAP** Device Address Proxy | [B-DAP-CPP](https://github.com/chipkin/BACnetProfileExample-B-DAP-CPP) | Ask | Ask | Ask | Ask | Ask |
+| **B-DAP** Device Address Proxy | [B-DAP-CPP](https://github.com/chipkin/BACnetProfileExample-B-DAP-CPP) ⛔ blocked on [stack #2032](https://github.com/chipkin/cas-bacnet-stack/issues/2032) | Ask | Ask | Ask | Ask | Ask |
 | **B-SCHUB** BACnet/SC Hub | [B-SCHUB-CPP](https://github.com/chipkin/BACnetProfileExample-B-SCHUB-CPP) | Ask | Ask | Ask | Ask | Ask |
 | **B-GENERAL** General device (Annex L.8) | *(satisfied by every example above)* | — | — | — | — | — |
 
@@ -356,7 +382,7 @@ Client-side profiles.
 | **B-EWS** Elevator Workstation | planned | — | — | — | — | — |
 | **B-AEWS** Advanced Elevator Workstation | planned | — | — | — | — | — |
 
-🚧 = in progress. "Ask" = not yet built for that language; contact Chipkin if you need it. Profile definitions: ANSI/ASHRAE 135-2024 Annex L. BIBB definitions: Annex K. Get the stack: <https://store.chipkin.com/services/stacks/bacnet-stack>.
+🚧 = in progress. ⛔ = Blocked Example (blocked on the named stack gap). "Ask" = not yet built for that language; contact Chipkin if you need it. Profile definitions: ANSI/ASHRAE 135-2024 Annex L. BIBB definitions: Annex K. Get the stack: <https://store.chipkin.com/services/stacks/bacnet-stack>.
 <!-- PROFILE-TABLE:END -->
 
 ## References

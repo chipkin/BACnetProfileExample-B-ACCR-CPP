@@ -97,9 +97,13 @@ enumeration, or string.
 The CAS BACnet Stack serves it by **wrapping the application's existing
 OctetString callback**: register the credential's raw bytes there (this
 example uses a 4-byte "simple-number32" card ID) and the stack assembles the
-SEQUENCE around them - `format-type` / `format-class` come back as the
-stack-side default `0`. This is a real, verified customer-DLL capability
-(stack PRs #166 and #167), not a gap.
+SEQUENCE around them - but `format-type` / `format-class` always come back as
+`0`. **That is a stack gap, and it is why this is a Blocked Example.**
+Format-Type `0` is `UNDEFINED`, which clause 12.36.4 reserves for "there is no
+current authentication factor value read by this object" - so every read
+reports "no credential", and the customer interface gives the application no
+way to report the real format (`simple-number32`). See the banner at the top of
+[README.md](README.md).
 
 Two more required properties need their own explanation:
 
