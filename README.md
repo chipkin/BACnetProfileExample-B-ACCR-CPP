@@ -43,7 +43,7 @@ instead of making every client poll.
 
 > **Versions:** this document describes **example v1.0.2**, built and verified
 > against **CAS BACnet Stack 6.0.23** (`6.x` @ `64b2cfac5`), at
-> **Protocol_Revision 30**, with the vendored `common/` helper at **v3.3.0**.
+> **Protocol_Revision 30**, with the vendored `common/` helper at **v3.4.0**.
 > Running the example prints all three - if what it prints disagrees with this
 > line, trust the program and check `CHANGELOG.md`.
 
@@ -153,6 +153,8 @@ This is a **self-contained** project. It ships:
 - `common/` - the shared helper (UDP, callbacks, CLI, keyboard) vendored in.
 - `CMakeLists.txt` - the build, the same on Windows, Linux, and macOS.
 - `docs/PICS.md` - the conformance statement.
+- `tests/` - the Wire Tests (see [Wire Tests](#wire-tests)), and `wiretest/`, the
+  series' shared Python harness they are written against (vendored, like `common/`).
 - `submodules/cas-bacnet-stack/` - the **CAS BACnet Stack as a git submodule**
   (private; requires a license - see above). Its sources are compiled into the
   executable, so there is no library or DLL to build, ship, or install.
@@ -212,7 +214,7 @@ Expected output:
 ```
 BACnet B-ACCR (Access Control Credential Reader) Example - C++ v1.0.2
 CAS BACnet Stack version: 6.0.23.0
-Common helper (common/) version: 3.3.0
+Common helper (common/) version: 3.4.0
 FYI: Listening for BACnet/IP on UDP port 47808 (Network Port 1).
 TX 21 bytes to 192.168.3.255:47808 (broadcast) (Network Port 1) - Unconfirmed: I-Am
 FYI: Device 389012 ("Chipkin Example B-ACCR") ready. Vendor ID 389. Press 'h' for help.
@@ -293,6 +295,24 @@ Use a BACnet client such as the
 For a property-by-property review against the conformance statement, and the
 reasoning behind the SubscribeCOV subtleties above, see
 [TUTORIAL.md](TUTORIAL.md).
+
+## Wire Tests
+
+Part of the checks above, automated: a Python BACnet client drives the running
+example over BACnet/IP from outside it, the way a client discovers a device -
+Who-Is, the Device's `Object_List`, then for every object its `Property_List` and
+a ReadProperty of every property it lists. Every read must come back as a value;
+an Error, Reject or Abort fails the run. Python 3 standard library only:
+
+```bash
+python3 tests/run_wire_tests.py --exe build/BACnetExampleBACCR          # Linux/macOS
+python tests\run_wire_tests.py --exe build\Release\BACnetExampleBACCR.exe   # Windows
+```
+
+It ends with `ALL WIRE TESTS PASSED` (exit 0). CI runs it on Linux after the
+smoke test. [tests/README.md](tests/README.md) says what each check proves. It
+does not test the Profile Function: a credential's Format-Type cannot be
+reported yet (see the Blocked Example note at the top).
 
 
 ## The BACnet profile example series
