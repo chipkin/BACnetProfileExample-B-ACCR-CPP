@@ -47,6 +47,17 @@ EXPECTED_OBJECTS = [DEVICE,
                     (OBJECT_TYPE_CREDENTIAL_DATA_INPUT, 1),       # "Flax"
                     NETWORK_PORT]
 
+# Database_Revision (cl. 12.11): the stack starts it at 0 and adds 1 for each object the
+# example adds at start-up - the six above - and nothing creates, deletes or renames an
+# object afterwards, so it reads 6 for the life of the process (docs/PICS.md). An
+# Out_Of_Service write changes a value, not the object database.
+PROPERTY_DATABASE_REVISION = 155
+# Analog Input 1's COV_Increment (cl. 12.2.16), as main.cpp serves it.
+PROPERTY_COV_INCREMENT = 22
+EXPECTED_COV_INCREMENT = 1.0
+PROPERTY_OUT_OF_SERVICE = 81
+EXPECTED_DATABASE_REVISION = len(EXPECTED_OBJECTS)
+
 # The four properties cl. 12.1.1.4.1 says Property_List does not contain.
 PROPERTY_OBJECT_TYPE = 79
 NOT_IN_PROPERTY_LIST = [wiretest.PROPERTY_OBJECT_IDENTIFIER, wiretest.PROPERTY_OBJECT_NAME,
@@ -164,6 +175,27 @@ def main():
             record(f"Network Port 1 {name} ({property_identifier}): listed in Property_List and reads as a value "
                    f"(issue {issue})", listed and failure is None,
                    "not in Property_List" if not listed else (failure or ""))
+
+        # Analog Input 1 supports COV reporting (DS-COV-B), so cl. 12.2.16 requires its
+        # COV_Increment: listed in Property_List, and reads main.cpp's 1.0.
+        analog_input = (wiretest.OBJECT_TYPE_ANALOG_INPUT, 1)
+        cov_increment = client.read_property(args.port, *analog_input, PROPERTY_COV_INCREMENT, timeout=2.0)
+        record(f"Analog Input 1 COV_Increment ({PROPERTY_COV_INCREMENT}): listed in Property_List and reads "
+               f"{EXPECTED_COV_INCREMENT} (cl. 12.2.16: required where COV reporting is supported)",
+               PROPERTY_COV_INCREMENT in property_lists.get(analog_input, []) and is_value(cov_increment)
+               and cov_increment.value == EXPECTED_COV_INCREMENT, outcome(cov_increment))
+
+        before = client.read_property(args.port, *DEVICE, PROPERTY_DATABASE_REVISION, timeout=2.0)
+        record(f"Device Database_Revision reads {EXPECTED_DATABASE_REVISION}, one per object added at start-up "
+               "(docs/PICS.md)", is_value(before) and before.value == EXPECTED_DATABASE_REVISION, outcome(before))
+        flax = (OBJECT_TYPE_CREDENTIAL_DATA_INPUT, 1)
+        writes = [client.write_property(args.port, *flax, PROPERTY_OUT_OF_SERVICE, wiretest.application_boolean(value),
+                                        timeout=2.0) for value in (True, False)]
+        after = client.read_property(args.port, *DEVICE, PROPERTY_DATABASE_REVISION, timeout=2.0)
+        record(f"Database_Revision still reads {EXPECTED_DATABASE_REVISION} after Credential Data Input 1 "
+               "Out_Of_Service is written TRUE then FALSE", all(write.ok for write in writes) and is_value(after)
+               and after.value == EXPECTED_DATABASE_REVISION,
+               "; ".join(write.describe() for write in writes) + f"; {outcome(after)}")
     finally:
         client.close()
         sensor.stop()

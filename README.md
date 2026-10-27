@@ -41,9 +41,9 @@ instead of making every client poll.
 - **[docs/PICS.md](docs/PICS.md)** - the Protocol Implementation Conformance
   Statement: every object, every property, and who answers it.
 
-> **Versions:** this document describes **example v1.0.2**, built and verified
-> against **CAS BACnet Stack 6.0.23** (`6.x` @ `64b2cfac5`), at
-> **Protocol_Revision 30**, with the vendored `common/` helper at **v3.4.0**.
+> **Versions:** this document describes **example v1.1.0**, built and verified
+> against **CAS BACnet Stack 6.0.23** (`6.x` @ `69b6249f`), at
+> **Protocol_Revision 30**, with the vendored `common/` helper at **v3.5.0**.
 > Running the example prints all three - if what it prints disagrees with this
 > line, trust the program and check `CHANGELOG.md`.
 
@@ -83,7 +83,8 @@ Device 389012  "Chipkin Example B-ACCR"   (Vendor 389 - Chipkin Automation Syste
 ```
 
 `Out_Of_Service` is writable (DS-WP-B) on the four input-family objects
-(Bronze, Emerald, Hot Pink, Flax). **Credential Data Input 1 (Flax)** is the
+(Bronze, Emerald, Hot Pink, Flax), and while it is TRUE so is `Present_Value`
+(Flax: `Reliability`), as BACnet requires. **Credential Data Input 1 (Flax)** is the
 B-ACCR addition - the object that makes this a credential reader.
 
 ## What this example supports
@@ -109,8 +110,8 @@ satisfies **B-GENERAL** too - that is subsumption, not a second claim.
 | Service | Notes |
 |---------|-------|
 | ReadProperty | Responds to property reads (DS-RP-B). |
-| WriteProperty | Accepts writes to `Out_Of_Service` on the four input-family objects (DS-WP-B). |
-| SubscribeCOV | Confirmed and unconfirmed subscriptions to Analog Input 1's `Present_Value` and Credential Data Input 1's `Update_Time` (DS-COV-B); both notifications carry `Present_Value`. See [TUTORIAL.md](TUTORIAL.md#add-cov-to-a-new-property) for why the subscribed property differs per object type. |
+| WriteProperty | Accepts writes to `Out_Of_Service` on the four input-family objects (DS-WP-B), and, while an object is out of service, to its `Present_Value` (Credential Data Input: `Reliability`). |
+| SubscribeCOV | Confirmed and unconfirmed subscriptions to Analog Input 1's `Present_Value` (its `COV_Increment` is 1.0) and Credential Data Input 1's `Update_Time` (DS-COV-B); both notifications carry `Present_Value`. See [TUTORIAL.md](TUTORIAL.md#add-cov-to-a-new-property) for why the subscribed property differs per object type. |
 | Who-Is / I-Am | Answers Who-Is with I-Am, and broadcasts an I-Am on start-up (DM-DDB-B). |
 | Who-Has / I-Have | Answers Who-Has with I-Have (DM-DOB-B). |
 
@@ -212,9 +213,9 @@ CMake at it: `cmake -B build -S . -D CAS_STACK_DIR=/path/to/cas-bacnet-stack`.
 Expected output:
 
 ```
-BACnet B-ACCR (Access Control Credential Reader) Example - C++ v1.0.2
+BACnet B-ACCR (Access Control Credential Reader) Example - C++ v1.1.0
 CAS BACnet Stack version: 6.0.23.0
-Common helper (common/) version: 3.4.0
+Common helper (common/) version: 3.5.0
 FYI: Listening for BACnet/IP on UDP port 47808 (Network Port 1).
 TX 21 bytes to 192.168.3.255:47808 (broadcast) (Network Port 1) - Unconfirmed: I-Am
 FYI: Device 389012 ("Chipkin Example B-ACCR") ready. Vendor ID 389. Press 'h' for help.
@@ -243,6 +244,8 @@ firewall. To use a different port, pass `--port` (see below).
 |--------|---------|---------|
 | `--port <n>` | `47808` | UDP port to listen on (BACnet/IP). |
 | `--deviceID <n>` | `389012` | The device's BACnet instance number (BACnet requires this to be configurable). |
+| `--deviceName <text>` | `Chipkin Example B-ACCR` | The Device object's `Object_Name`, 1..255 bytes, no control characters. It must be unique across the BACnet internetwork, so give every unit its own (BACnet requires it to be configurable, like the instance). An invalid value prints a warning and keeps the default. |
+| `--xml` | off | Print every received and sent BACnet message as an indented XML block instead of a one-line summary (very verbose; for protocol debugging). |
 | `--help`, `-h` | - | Show usage and exit. |
 | `--version` | - | Print the example, stack, and `common/` helper versions, then exit. |
 
@@ -288,9 +291,11 @@ Use a BACnet client such as the
    `Update_Time`. Press up/down again and confirm a change notification for
    the new card.
 7. **WriteProperty** `Out_Of_Service` = `true` on Analog Input 1; re-read it
-   back as `true`. **Confirm the profile boundary** - a WriteProperty to
-   `Present_Value` (any object) is rejected: none of this profile's objects
-   has a profile-writable `Present_Value`.
+   back as `true`. Now WriteProperty `Present_Value` = 30.0 on it: accepted,
+   and it reads back 30.0 until `Out_Of_Service` is `false` again (BACnet
+   requires an input's `Present_Value` to be writable while it is out of
+   service). **Confirm the profile boundary** - while an object is in service,
+   a WriteProperty to its `Present_Value` is rejected (write-access-denied).
 
 For a property-by-property review against the conformance statement, and the
 reasoning behind the SubscribeCOV subtleties above, see

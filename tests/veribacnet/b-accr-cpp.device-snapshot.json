@@ -1,0 +1,1010 @@
+{
+  "capturedAt": "2026-10-26T14:00:31.858Z",
+  "derivedBibbs": [
+    "DM-DDB-B",
+    "DM-DOB-B",
+    "DS-COV-B",
+    "DS-RP-B",
+    "DS-WP-B"
+  ],
+  "errors": [],
+  "iam": {
+    "deviceInstance": 389012,
+    "maxApdu": 1476,
+    "segmentation": "both",
+    "vendorId": 389
+  },
+  "identity": {
+    "applicationSoftwareVersion": "1.1.0",
+    "firmwareRevision": "6.0.23.0",
+    "modelName": "CAS BACnet Stack Example - B-ACCR",
+    "objectName": "Chipkin Example B-ACCR",
+    "protocolRevision": 30,
+    "protocolVersion": 1,
+    "vendorId": 389,
+    "vendorName": "Chipkin Automation Systems"
+  },
+  "maxApduLengthAccepted": 1476,
+  "objectTypesSupported": [
+    "analogInput",
+    "binaryInput",
+    "device",
+    "multiStateInput",
+    "credentialDataInput",
+    "networkPort"
+  ],
+  "objects": [
+    {
+      "objectIdentifier": {
+        "instance": 1,
+        "type": "analogInput"
+      },
+      "properties": {
+        "covIncrement": {
+          "status": "ok",
+          "value": {
+            "tag": "real",
+            "value": 1
+          }
+        },
+        "eventState": {
+          "status": "ok",
+          "value": {
+            "name": "normal",
+            "tag": "enumerated",
+            "value": 0
+          }
+        },
+        "objectIdentifier": {
+          "status": "ok",
+          "value": {
+            "tag": "objectIdentifier",
+            "value": {
+              "instance": 1,
+              "type": "analogInput"
+            }
+          }
+        },
+        "objectName": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "Bronze"
+          }
+        },
+        "outOfService": {
+          "status": "ok",
+          "value": {
+            "tag": "boolean",
+            "value": false
+          }
+        },
+        "presentValue": {
+          "status": "ok",
+          "value": {
+            "tag": "real",
+            "value": 21.5
+          }
+        },
+        "statusFlags": {
+          "status": "ok",
+          "value": {
+            "tag": "bitString",
+            "value": [
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        },
+        "units": {
+          "status": "ok",
+          "value": {
+            "name": "degreesCelsius",
+            "tag": "enumerated",
+            "value": 62
+          }
+        }
+      },
+      "propertyList": [
+        "covIncrement",
+        "eventState",
+        "outOfService",
+        "presentValue",
+        "statusFlags",
+        "units"
+      ]
+    },
+    {
+      "objectIdentifier": {
+        "instance": 1,
+        "type": "binaryInput"
+      },
+      "properties": {
+        "eventState": {
+          "status": "ok",
+          "value": {
+            "name": "normal",
+            "tag": "enumerated",
+            "value": 0
+          }
+        },
+        "objectIdentifier": {
+          "status": "ok",
+          "value": {
+            "tag": "objectIdentifier",
+            "value": {
+              "instance": 1,
+              "type": "binaryInput"
+            }
+          }
+        },
+        "objectName": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "Emerald"
+          }
+        },
+        "outOfService": {
+          "status": "ok",
+          "value": {
+            "tag": "boolean",
+            "value": false
+          }
+        },
+        "polarity": {
+          "status": "ok",
+          "value": {
+            "name": "normal",
+            "tag": "enumerated",
+            "value": 0
+          }
+        },
+        "presentValue": {
+          "status": "ok",
+          "value": {
+            "name": "inactive",
+            "tag": "enumerated",
+            "value": 0
+          }
+        },
+        "statusFlags": {
+          "status": "ok",
+          "value": {
+            "tag": "bitString",
+            "value": [
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        }
+      },
+      "propertyList": [
+        "eventState",
+        "outOfService",
+        "polarity",
+        "presentValue",
+        "statusFlags"
+      ]
+    },
+    {
+      "objectIdentifier": {
+        "instance": 389012,
+        "type": "device"
+      },
+      "properties": {
+        "activeCovSubscriptions": {
+          "status": "ok",
+          "value": {
+            "tag": "constructed",
+            "value": []
+          }
+        },
+        "apduSegmentTimeout": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 5000
+          }
+        },
+        "apduTimeout": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 10000
+          }
+        },
+        "applicationSoftwareVersion": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "1.1.0"
+          }
+        },
+        "databaseRevision": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 6
+          }
+        },
+        "description": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "Chipkin CAS BACnet Stack example - B-ACCR (Access Control Credential Reader) profile. Demonstrates DS-RP-B + DS-WP-B + DS-COV-B + DS-ACCDI-B: a Credential Data Input object reporting the last credential presented, pushed to subscribers with SubscribeCOV."
+          }
+        },
+        "deviceAddressBinding": {
+          "status": "ok",
+          "value": {
+            "tag": "constructed",
+            "value": []
+          }
+        },
+        "firmwareRevision": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "6.0.23.0"
+          }
+        },
+        "maxApduLengthAccepted": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 1476
+          }
+        },
+        "maxSegmentsAccepted": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 16
+          }
+        },
+        "modelName": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "CAS BACnet Stack Example - B-ACCR"
+          }
+        },
+        "numberOfApduRetries": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 3
+          }
+        },
+        "objectIdentifier": {
+          "status": "ok",
+          "value": {
+            "tag": "objectIdentifier",
+            "value": {
+              "instance": 389012,
+              "type": "device"
+            }
+          }
+        },
+        "objectList": {
+          "status": "ok",
+          "value": {
+            "tag": "constructed",
+            "value": [
+              {
+                "tag": "objectIdentifier",
+                "value": {
+                  "instance": 1,
+                  "type": "analogInput"
+                }
+              },
+              {
+                "tag": "objectIdentifier",
+                "value": {
+                  "instance": 1,
+                  "type": "binaryInput"
+                }
+              },
+              {
+                "tag": "objectIdentifier",
+                "value": {
+                  "instance": 389012,
+                  "type": "device"
+                }
+              },
+              {
+                "tag": "objectIdentifier",
+                "value": {
+                  "instance": 1,
+                  "type": "multiStateInput"
+                }
+              },
+              {
+                "tag": "objectIdentifier",
+                "value": {
+                  "instance": 1,
+                  "type": "credentialDataInput"
+                }
+              },
+              {
+                "tag": "objectIdentifier",
+                "value": {
+                  "instance": 1,
+                  "type": "networkPort"
+                }
+              }
+            ]
+          }
+        },
+        "objectName": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "Chipkin Example B-ACCR"
+          }
+        },
+        "protocolObjectTypesSupported": {
+          "status": "ok",
+          "value": {
+            "tag": "bitString",
+            "value": [
+              true,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        },
+        "protocolRevision": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 30
+          }
+        },
+        "protocolServicesSupported": {
+          "status": "ok",
+          "value": {
+            "tag": "bitString",
+            "value": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        },
+        "protocolVersion": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 1
+          }
+        },
+        "segmentationSupported": {
+          "status": "ok",
+          "value": {
+            "name": "segmentedBoth",
+            "tag": "enumerated",
+            "value": 0
+          }
+        },
+        "systemStatus": {
+          "status": "ok",
+          "value": {
+            "name": "operational",
+            "tag": "enumerated",
+            "value": 0
+          }
+        },
+        "vendorIdentifier": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 389
+          }
+        },
+        "vendorName": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "Chipkin Automation Systems"
+          }
+        }
+      },
+      "propertyList": [
+        "apduSegmentTimeout",
+        "apduTimeout",
+        "applicationSoftwareVersion",
+        "description",
+        "deviceAddressBinding",
+        "firmwareRevision",
+        "maxApduLengthAccepted",
+        "modelName",
+        "numberOfApduRetries",
+        "objectList",
+        "protocolObjectTypesSupported",
+        "protocolServicesSupported",
+        "protocolVersion",
+        "segmentationSupported",
+        "systemStatus",
+        "vendorIdentifier",
+        "vendorName",
+        "protocolRevision",
+        "activeCovSubscriptions",
+        "databaseRevision",
+        "maxSegmentsAccepted"
+      ]
+    },
+    {
+      "objectIdentifier": {
+        "instance": 1,
+        "type": "multiStateInput"
+      },
+      "properties": {
+        "eventState": {
+          "status": "ok",
+          "value": {
+            "name": "normal",
+            "tag": "enumerated",
+            "value": 0
+          }
+        },
+        "numberOfStates": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 3
+          }
+        },
+        "objectIdentifier": {
+          "status": "ok",
+          "value": {
+            "tag": "objectIdentifier",
+            "value": {
+              "instance": 1,
+              "type": "multiStateInput"
+            }
+          }
+        },
+        "objectName": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "Hot Pink"
+          }
+        },
+        "outOfService": {
+          "status": "ok",
+          "value": {
+            "tag": "boolean",
+            "value": false
+          }
+        },
+        "presentValue": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 1
+          }
+        },
+        "stateText": {
+          "status": "ok",
+          "value": {
+            "tag": "constructed",
+            "value": [
+              {
+                "tag": "characterString",
+                "value": "On"
+              },
+              {
+                "tag": "characterString",
+                "value": "Off"
+              },
+              {
+                "tag": "characterString",
+                "value": "Auto"
+              }
+            ]
+          }
+        },
+        "statusFlags": {
+          "status": "ok",
+          "value": {
+            "tag": "bitString",
+            "value": [
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        }
+      },
+      "propertyList": [
+        "eventState",
+        "numberOfStates",
+        "outOfService",
+        "presentValue",
+        "stateText",
+        "statusFlags"
+      ]
+    },
+    {
+      "objectIdentifier": {
+        "instance": 1,
+        "type": "credentialDataInput"
+      },
+      "properties": {
+        "objectIdentifier": {
+          "status": "ok",
+          "value": {
+            "tag": "objectIdentifier",
+            "value": {
+              "instance": 1,
+              "type": "credentialDataInput"
+            }
+          }
+        },
+        "objectName": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "Flax"
+          }
+        },
+        "outOfService": {
+          "status": "ok",
+          "value": {
+            "tag": "boolean",
+            "value": false
+          }
+        },
+        "presentValue": {
+          "status": "ok",
+          "value": {
+            "tag": "constructed",
+            "value": [
+              {
+                "name": "undefined",
+                "tag": "enumerated",
+                "value": 0
+              },
+              {
+                "tag": "unsignedInt",
+                "value": 0
+              },
+              {
+                "hex": "00a1b2c3",
+                "tag": "octetString"
+              }
+            ]
+          }
+        },
+        "reliability": {
+          "status": "ok",
+          "value": {
+            "name": "noFaultDetected",
+            "tag": "enumerated",
+            "value": 0
+          }
+        },
+        "statusFlags": {
+          "status": "ok",
+          "value": {
+            "tag": "bitString",
+            "value": [
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        },
+        "supportedFormats": {
+          "detail": {
+            "kind": "decode",
+            "message": "ReadProperty-ACK for credentialDataInput:1 supportedFormats has a PropertyValue shape the decoder does not handle: {\"_context\":\"3\",\"AuthenticationFactorFormat\":{\"FormatType\":{\"_text\":\"simpleNumber32\",\"_context\":\"0\",\"_datatype\":\"9\",\"_datatypeLabel\":\"Enumerated\",\"_value\":\"4\"}}}",
+            "path": "rp"
+          },
+          "reason": "decode failed: ReadProperty-ACK for credentialDataInput:1 supportedFormats has a PropertyValue shape the decoder does not handle: {\"_context\":\"3\",\"AuthenticationFactorFormat\":{\"FormatType\":{\"_text\":\"simpleNumber32\",\"_context\":\"0\",\"_datatype\":\"9\",\"_datatypeLabel\":\"Enumerated\",\"_value\":\"4\"}}}",
+          "status": "error"
+        },
+        "updateTime": {
+          "status": "ok",
+          "value": {
+            "tag": "time",
+            "value": {
+              "hour": 7,
+              "hundredths": 0,
+              "minute": 0,
+              "second": 31
+            }
+          }
+        }
+      },
+      "propertyList": [
+        "outOfService",
+        "presentValue",
+        "reliability",
+        "statusFlags",
+        "updateTime",
+        "supportedFormats"
+      ]
+    },
+    {
+      "objectIdentifier": {
+        "instance": 1,
+        "type": "networkPort"
+      },
+      "properties": {
+        "apduLength": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 1476
+          }
+        },
+        "bacnetIpMode": {
+          "status": "ok",
+          "value": {
+            "name": "normal",
+            "tag": "enumerated",
+            "value": 0
+          }
+        },
+        "bacnetIpUdpPort": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 47846
+          }
+        },
+        "changesPending": {
+          "status": "ok",
+          "value": {
+            "tag": "boolean",
+            "value": false
+          }
+        },
+        "command": {
+          "status": "ok",
+          "value": {
+            "name": "idle",
+            "tag": "enumerated",
+            "value": 0
+          }
+        },
+        "commandValidationResult": {
+          "status": "ok",
+          "value": {
+            "tag": "constructed",
+            "value": [
+              {
+                "tag": "constructed",
+                "value": [
+                  {
+                    "tag": "date",
+                    "value": {
+                      "day": 255,
+                      "month": 255,
+                      "weekday": 255,
+                      "year": 2155
+                    }
+                  },
+                  {
+                    "tag": "time",
+                    "value": {
+                      "hour": 255,
+                      "hundredths": 255,
+                      "minute": 255,
+                      "second": 255
+                    }
+                  }
+                ]
+              },
+              {
+                "tag": "constructed",
+                "value": [
+                  {
+                    "name": "object",
+                    "tag": "enumerated",
+                    "value": 1
+                  },
+                  {
+                    "name": "success",
+                    "tag": "enumerated",
+                    "value": 84
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "fdBbmdAddress": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "host-specific (not recorded)"
+          }
+        },
+        "fdSubscriptionLifetime": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 0
+          }
+        },
+        "ipAddress": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "host-specific (not recorded)"
+          }
+        },
+        "ipDefaultGateway": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "host-specific (not recorded)"
+          }
+        },
+        "ipDnsServer": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "host-specific (not recorded)"
+          }
+        },
+        "ipSubnetMask": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "host-specific (not recorded)"
+          }
+        },
+        "linkSpeed": {
+          "status": "ok",
+          "value": {
+            "tag": "real",
+            "value": 0
+          }
+        },
+        "macAddress": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "host-specific (not recorded)"
+          }
+        },
+        "networkNumber": {
+          "status": "ok",
+          "value": {
+            "tag": "unsignedInt",
+            "value": 0
+          }
+        },
+        "networkNumberQuality": {
+          "status": "ok",
+          "value": {
+            "name": "unknown",
+            "tag": "enumerated",
+            "value": 0
+          }
+        },
+        "networkType": {
+          "status": "ok",
+          "value": {
+            "name": "ipv4",
+            "tag": "enumerated",
+            "value": 5
+          }
+        },
+        "objectIdentifier": {
+          "status": "ok",
+          "value": {
+            "tag": "objectIdentifier",
+            "value": {
+              "instance": 1,
+              "type": "networkPort"
+            }
+          }
+        },
+        "objectName": {
+          "status": "ok",
+          "value": {
+            "tag": "characterString",
+            "value": "Vermilion"
+          }
+        },
+        "outOfService": {
+          "status": "ok",
+          "value": {
+            "tag": "boolean",
+            "value": false
+          }
+        },
+        "protocolLevel": {
+          "status": "ok",
+          "value": {
+            "name": "bacnetApplication",
+            "tag": "enumerated",
+            "value": 2
+          }
+        },
+        "reliability": {
+          "status": "ok",
+          "value": {
+            "name": "noFaultDetected",
+            "tag": "enumerated",
+            "value": 0
+          }
+        },
+        "statusFlags": {
+          "status": "ok",
+          "value": {
+            "tag": "bitString",
+            "value": [
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        }
+      },
+      "propertyList": [
+        "outOfService",
+        "reliability",
+        "statusFlags",
+        "apduLength",
+        "ipAddress",
+        "ipDefaultGateway",
+        "ipDnsServer",
+        "bacnetIpMode",
+        "ipSubnetMask",
+        "bacnetIpUdpPort",
+        "changesPending",
+        "command",
+        "fdBbmdAddress",
+        "fdSubscriptionLifetime",
+        "linkSpeed",
+        "macAddress",
+        "networkNumber",
+        "networkNumberQuality",
+        "networkType",
+        "protocolLevel",
+        "commandValidationResult"
+      ]
+    }
+  ],
+  "pollPath": "rp-per-property",
+  "pollWarnings": [],
+  "segmentationSupported": "both",
+  "servicesSupported": [
+    "subscribeCOV",
+    "readProperty",
+    "writeProperty",
+    "iAm",
+    "iHave",
+    "whoHas",
+    "whoIs"
+  ],
+  "target": {
+    "address": "127.0.0.1",
+    "deviceInstance": 389012,
+    "port": 47846
+  }
+}

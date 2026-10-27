@@ -5,203 +5,77 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.2] - unreleased
+## [Unreleased]
 
-### Changed - stack 6.x @ 64b2cfac5 (2026-10-15)
+_No changes yet._
 
-- **Stack Pin moved `e6de4ffd` -> `6.x` @ `64b2cfac5`** (still reports 6.0.23),
-  per docs/adr/0001. `64b2cfac5` is the promotion of `issues/runbook` that
-  carries stack #3850, so the `6.x` tip links customer (non-test-tool) builds
-  again. Builds clean (Windows STATIC, `ReleaseLib|x64`) with no source change.
-- **`common/` 3.0.0 -> 3.3.0**, vendored verbatim from
-  BACnetProfileExample-B-SS-CPP `b640a81`: the `k`, `o`, `f`, `p` key commands
-  (unused here) and a zero-length connection string sent as a broadcast.
-- README sample output: the start-up `TX` line ends `- Unconfirmed: I-Am`, as
-  the program prints it.
-- Still a **Blocked Example on stack #3934** (open): at this pin the stack
-  still wraps the OctetString callback as `BACnetAuthenticationFactor(0, 0, ...)`,
-  and the only way to set a Format-Type is the test-tool
-  `BACnetStackTestTool_PushCredentialDataInputFactor`, which this example must
-  not use. New `TODO.md` names the issue; the series profile table now links it
-  instead of "no stack issue yet".
+## [1.1.0] - 2026-10-27
 
-### Added - Wire Tests (2026-10-15)
+This is a **Blocked Example**. The CAS BACnet Stack cannot yet report a presented
+credential through its customer interface. See the note at the top of the README.
 
-- **`tests/discovery_test.py`**, the series' discovery Wire Test (from
-  B-SS-CPP, with its visible Who-Is `[RETRY]`; only the device instance 389012,
-  executable name, port 47812 and the expected objects differ), plus
-  `tests/run_wire_tests.py` and `tests/README.md`: Who-Is, Object_List, and a
-  ReadProperty of every property every object lists - 12 checks, 89 reads, all
-  values, on Windows and Linux. `release.yml` runs it on Linux after the smoke
-  test. It tests the device's discovery surface only; the Profile Function is
-  still blocked on stack #3934.
-- **`wiretest/` 0.6.0**, the series' shared Python harness, vendored verbatim
-  from B-LS-CPP.
+- **Does today:** a discoverable BACnet/IP device with Analog Input, Binary Input,
+  Multi-state Input, Credential Data Input and Network Port objects. It answers
+  ReadProperty, WriteProperty, Who-Is and SubscribeCOV.
+- **Does not do today:** every read of Credential Data Input 1 `Present_Value`
+  says "no credential" (Format-Type 0, cl. 12.36.4), because the real format type
+  cannot be set. Two card presentations in the same second produce one COV
+  notification, since `Update_Time` has one-second resolution. A write to the
+  Credential Data Input's `Present_Value` is not possible.
 
-### Changed - common/ 3.4.0 (2026-10-15)
+Built on CAS BACnet Stack 6.x (`69b6249f`, 6.0.23).
 
-- **`common/` 3.3.0 -> 3.4.0**, vendored verbatim from B-SS-CPP `5d78299`:
-  `HelperSendMessage` sends a broadcast addressed to the socket's own address
-  to the subnet broadcast instead.
+### Added
 
-### Changed - honesty pass (2026-10-14)
-
-- **Stack Pin moved `abd4cee1` (6.0.21) -> `6.x` @ `e6de4ffd` (6.0.23)**, per
-  docs/adr/0001 (the pin follows the latest `6.x` when an example is updated).
-  Not the `6.x` tip `4b27bd56d`: that tip fails to link any customer
-  (non-test-tool) build - `RecordTypedGetDecline` is defined only under
-  `BACNET_STACK_TESTTOOL` (stack #3850, fixed on `issues/runbook` but not yet
-  promoted to `6.x`). `e6de4ffd` is the newest `6.x` commit that links. Builds
-  clean (STATIC) with no source change.
-- **Protocol_Revision is 30, not 24** - the stack default at this pin. README,
-  PICS, TUTORIAL, AGENTS.md and `main.cpp` comments said 24.
-- README version banner and sample output, and PICS Application Software
-  Version / Firmware Revision, now match what the program reports
-  (`APP_VERSION`, the linked stack version, `common/` 3.0.0).
-- Series profile table re-synced (B-ACCR and B-DAP marked as Blocked Examples).
-- **Now a Blocked Example.** `main.cpp`, TUTORIAL, AGENTS.md and PICS called the
-  Credential Data Input's authentication factor "a real, verified customer-DLL
-  capability ... not a gap". It is a gap: the stack wraps the OctetString
-  callback as `BACnetAuthenticationFactor(0, 0, ...)`, and Format-Type 0 is
-  UNDEFINED - "no current authentication factor" (cl. 12.36.4) - on every read.
-  README carries a blocked banner naming this, plus the whole-second
-  `Update_Time` resolution that collapses same-second presentations into one COV
-  notification.
+- **`--deviceName <text>`** sets the Device's `Object_Name` at start-up (1 to 255
+  bytes). The default, "Chipkin Example B-ACCR", is unchanged and the name cannot
+  be written over BACnet. `--help` now lists only the options this example reads,
+  and `--xml` (print each frame as XML) works.
+- **Automated self-tests** under `tests/`: discovery, configuration, and
+  out-of-service tests.
+- **TUTORIAL.md** (the SubscribeCOV pattern, extending the example,
+  troubleshooting) and **docs/PICS.md** (Annex A style).
 
 ### Changed
 
-- **Device renamed from the series' colour placeholder "Rainbow" to "Chipkin
-  Example B-ACCR"** so devices from different examples in the series are
-  distinguishable from each other on the same BACnet network - every example
-  previously announced the identical Object_Name "Rainbow", which made two
-  examples on one subnet indistinguishable by name. Sub-object names (Analog
-  Input 1 "Bronze", etc.) are unchanged - only the Device object's name
-  changed. `docs/colour-table.md` (series root) updated to match. APP_VERSION
-  bumped 1.0.1 -> 1.0.2.
-
-## [Unreleased]
+- **Device renamed** from "Rainbow" to "Chipkin Example B-ACCR" so examples on one
+  network can be told apart. Object names such as "Bronze" are unchanged.
+- **Build now compiles the stack source directly into the executable**:
+  `cmake -B build -S .` then `cmake --build build --config Release` on every
+  platform; the separate static-library step is gone.
+- **Protocol_Revision is 30** (the documentation said 24), and segmentation is
+  `segmented-both` (the PICS said none).
+- **PICS Database_Revision is 6**, as the stack counts the objects added at
+  start-up (cl. 12.11).
 
 ### Fixed
 
-- **`Application_Software_Version` (12) and `Firmware_Revision` (44) were
-  hardcoded and stale** - the same bug found and fixed in the sibling
-  BACnetProfileExample-B-SCHUB-CPP example via a real device read (BACnet
-  Explorer): `Application_Software_Version` reported a hardcoded `"1.0.0"`
-  regardless of the actual build, and `Firmware_Revision` was the same stale
-  `"1.0.0"` constant - it was never meant to be this example's own version at
-  all, it names the underlying platform. Fixed: `Application_Software_Version`
-  now reads `APP_VERSION` directly (one source of truth, can't drift from
-  `--version`'s own banner again). `Firmware_Revision` is now built at
-  runtime from the CAS BACnet Stack's own `BACnetStack_GetAPIMajorVersion()`/
-  `GetAPIMinorVersion()`/`GetAPIPatchVersion()`/`GetAPIBuildVersion()` (the
-  same 4 calls `common/CASExampleHelper.cpp`'s `PrintVersion()` already uses
-  for the startup banner), populated once right after `LoadBACnetFunctions()`
-  succeeds. APP_VERSION bumped 1.0.0 -> 1.0.1.
-
-### Changed
-
-- **Documentation restructure**, matching `BACnetProfileExample-B-SS-CPP`:
-  `README.md` cut down to this example only (device tree, BIBBs/services/
-  objects tables, build/run/verify, footprint, series table, references);
-  long-form material (SubscribeCOV/F-COV pattern, Credential Data Input's
-  `Present_Value` explanation, extending the example, who-serves-what,
-  troubleshooting) moved to a new `TUTORIAL.md`; a new `docs/PICS.md` holds
-  the ANSI/ASHRAE 135 Annex A-shaped conformance statement, generated in part
-  from `docs/objects.json` (which now also lists the Device object). The
-  ship-guidance table that used to live in the README ("Before you ship") is
-  now comments in `main.cpp`'s `CHANGE ALL OF THIS BEFORE YOU SHIP` block,
-  including the `DEVICE_NAME` uniqueness warning.
-- **Build switched from a prebuilt STATIC library to the adapter's default
-  SOURCE mode**: `cmake -B build -S .` / `cmake --build build --config
-  Release` with no link-mode flag, matching every other repository in the
-  series and removing the `tools/build-stack-static.sh` series-root
-  dependency this repository could not satisfy on its own.
-  `.github/workflows/release.yml` updated to match (no static-library cache/
-  build steps, no matrix `lib:` entries, link-mode assertion now `SOURCE`,
-  metrics JSON's `link_mode` now `"SOURCE"`, `TUTORIAL.md` and
-  `docs/PICS.md` added to the packaged release artifact). The Footprint
-  table's numbers are still from the v1.0.0 STATIC build; the next release
-  refreshes them from the documented SOURCE build.
+- **Taking an input out of service now notifies its COV subscribers**, as clause
+  13.1 requires for a `Status_Flags` change.
+- **An input's `Present_Value` is writable while it is out of service**
+  (cl. 12.2.4); a Multi-state value outside 1..`Number_Of_States` is refused.
+- **Analog Input 1 has `COV_Increment`** (1.0), as cl. 12.2.16 requires for COV.
+- **Application_Software_Version and Firmware_Revision** report the real build
+  version and stack version instead of a fixed "1.0.0".
+- **Requests no longer go unanswered on Windows** in rare timing cases (shared
+  `common/` 3.5.0).
 
 ## [1.0.0] - 2026-09-15
 
 ### Added
 
-Initial **B-ACCR (Access Control Credential Reader)** profile example for the
-CAS BACnet Stack example series, built from the plan-only stub. Implements:
-
-- **DS-RP-B / DS-WP-B** - ReadProperty on every object; WriteProperty of
-  `Out_Of_Service` on the four input-family objects (this profile has no
-  profile-required writable `Present_Value`).
-- **DS-COV-B** - SubscribeCOV (confirmed and unconfirmed), enabled on Analog
-  Input 1 (Bronze) and Credential Data Input 1 (Flax). This repo is the
-  series' canonical source for the SubscribeCOV pattern (F-COV):
-  `SetPropertySubscribable` + `SetCOVSettings` at start-up, and
-  `BACnetStack_UpdateValue` on every application-driven value change (the
-  up/down keys).
-- **DS-ACCDI-B** - a **Credential Data Input** object (Flax, type 37) serving
-  `Present_Value` (`BACnetAuthenticationFactor`, via the OctetString callback),
-  `Supported_Formats` (via the dedicated
-  `RegisterCallbackGetPropertyAuthenticationFactorFormat` callback -
-  simple-number32 is the one format this reader supports), `Update_Time` (via
-  the existing Time callback, wrapped into `BACnetTimeStamp` by the stack),
-  and `Reliability`.
-- **DM-DDB-B / DM-DOB-B** - Who-Is/I-Am and Who-Has/I-Have.
-- Base objects: Analog Input 1 "Bronze", Binary Input 1 "Emerald",
-  Multi-State Input 1 "Hot Pink", Network Port 1 "Vermilion".
-- **CAS BACnet Stack 6.0.21 (`6.x` @ `abd4cee1`), linked as a static library**
-  (`-DCAS_BACNET_STACK_LINK=STATIC`, built by `tools/build-stack-static.sh`).
-  `common/` **v2.5.0**, byte-identical with the rest of the series.
-- `docs/objects.json`-driven "Objects and properties" README block, the
-  series-wide profile table block, and a `## Footprint` table placeholder
-  (filled at release).
-
-**Gap check:** none. The AuthenticationFactor / AuthenticationFactorFormat /
-Update_Time customer-DLL callbacks this profile needs were verified present
-at the pin (stack PRs #166 and #167 - see `docs/profiles.md`); `TODO.md` has
-nothing to report.
-
-**Found while building this example:** a plain SubscribeCOV does not let the
-client choose which property it monitors - the stack decides, per object
-type (135-2024 Table 13-1). For most types that is `Present_Value`; for
-**Credential Data Input** the stack's own
-`BACnetSubscribeCOVProcessor::GetSubscriptionProperty()` returns
-`Update_Time` instead. Calling `SetPropertySubscribable` on
-`Present_Value` for Credential Data Input 1 compiles, returns `true`, and
-still fails every client's SubscribeCOV with `Error(subscribe-cov):
-property: not-cov-property` - confirmed on the wire with a real BACnet client while
-building this example. Fixed by making `Update_Time` the subscribable /
-`UpdateValue`-driven property instead; the notification payload still
-carries `Present_Value` (it is just not the trigger condition). See the long
-comment above the `SetPropertySubscribable` calls in `main.cpp`.
-
-**Verified with a live BACnet client, this session:**
-Who-Is/I-Am from 389012; `Object_List` (6 objects); every required property
-of Analog Input 1 and Credential Data Input 1 read back correctly, including
-`Present_Value` (AuthenticationFactor, correctly wrapped), `Supported_Formats`
-(1 entry, simple-number32), `Update_Time` (a real timestamp), and
-`Reliability`; WriteProperty of `Out_Of_Service` on both objects accepted and
-read back; WriteProperty of `Present_Value` rejected
-(`write-access-denied`); SubscribeCOV confirmed on Analog Input 1 - initial
-notification carries exactly `Present_Value` + `Status_Flags`; SubscribeCOV
-unconfirmed on Credential Data Input 1 - initial notification carries
-`Present_Value` + `Update_Time` + `Status_Flags`; the device continues
-answering ReadProperty normally after a short-lifetime subscription elapses.
-**Not verified this session:** a live, key-press-triggered *second* (change)
-COV notification to an already-active subscriber - the session's environment
-has no interactive console for the up/down keys `PollKey()` reads
-(`_kbhit()`/`_getch()`, not scriptable via redirected stdin). The
-`BACnetStack_UpdateValue` call this relies on is the same API already proven,
-in this same session, to deliver the *initial* notification correctly for
-both objects.
-
-**`common/` moved twice more after this repo's initial merge**, both times
-from other Wave 2 repos building in parallel: 2.2.0 (this repo's initial
-merge) -> 2.3.0/2.4.0 (multi-port UDP support + a router-announce key,
-`BACnetProfileExample-B-RTR-CPP`'s F-ROUTER/F-MULTIPORT canonical work) ->
-2.5.0 (`PROPERTY_IDENTIFIER_ROUTING_TABLE`, same repo). All three are
-documented non-breaking / additive for single-port examples like this one
-(`common/CHANGELOG.md`, verified there directly against B-SS-CPP). Re-synced
-to 2.5.0 and rebuilt STATIC; smoke test unchanged.
-
-[1.0.0]: https://github.com/chipkin/BACnetProfileExample-B-ACCR-CPP/releases/tag/v1.0.0
+- Initial **B-ACCR (Access Control Credential Reader)** profile example in C++,
+  built on CAS BACnet Stack 6.x (`abd4cee1`, 6.0.21).
+- **DS-RP-B / DS-WP-B:** ReadProperty on every object; WriteProperty of
+  `Out_Of_Service` on the four input objects.
+- **DS-COV-B:** confirmed and unconfirmed SubscribeCOV on Analog Input 1 "Bronze"
+  and Credential Data Input 1 "Flax", with the stack notified of each value change
+  (the up/down keys).
+- **DS-ACCDI-B:** Credential Data Input 1 serves `Present_Value`,
+  `Supported_Formats` (simple-number32), `Update_Time` and `Reliability`.
+- **DM-DDB-B / DM-DOB-B:** Who-Is/I-Am and Who-Has/I-Have.
+- Objects: Analog Input 1 "Bronze", Binary Input 1 "Emerald", Multi-State Input 1
+  "Hot Pink", Credential Data Input 1 "Flax", Network Port 1 "Vermilion".
+- Note: for a Credential Data Input the stack monitors `Update_Time`, not
+  `Present_Value`, for SubscribeCOV (135-2024 Table 13-1). The example makes
+  `Update_Time` the COV trigger; notifications still carry `Present_Value`.

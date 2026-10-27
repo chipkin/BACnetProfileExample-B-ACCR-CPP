@@ -60,8 +60,8 @@ commands above.
 ## Run
 
 ```bash
-./build/BACnetExampleBACCR [--port 47808] [--deviceID 389012]   # Linux/macOS
-.\build\Release\BACnetExampleBACCR.exe [--port 47808] [--deviceID 389012]   # Windows
+./build/BACnetExampleBACCR [--port 47808] [--deviceID 389012] [--deviceName "Chipkin Example B-ACCR"]   # Linux/macOS
+.\build\Release\BACnetExampleBACCR.exe [--port 47808] [--deviceID 389012] [--deviceName "Chipkin Example B-ACCR"]   # Windows
 ```
 
 Interactive keys while running: `h` help, `q` quit, up/down nudge Analog Input 1
